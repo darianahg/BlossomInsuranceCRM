@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Clientes')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Clientes</h4>
+        <div>
+            <a th:href="@{/clients/export}" class="btn btn-outline-secondary">⬇ Exportar reporte (CSV)</a>
+            <a th:href="@{/clients/new}" class="btn btn-primary">+ Nuevo cliente</a>
+        </div>
+    </div>
+
+    <div class="card p-3">
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Ciudad</th>
+                <th th:if="${isAdmin}">Agente asignado</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="client : ${clients}">
+                <td th:text="${client.fullName}">Nombre</td>
+                <td th:text="${client.email}">email@ejemplo.com</td>
+                <td th:text="${client.phone}">0000-0000</td>
+                <td th:text="${client.city}">Ciudad</td>
+                <td th:if="${isAdmin}">
+                    <span th:if="${client.assignedAgent != null}" th:text="${client.assignedAgent.fullName}">Agente</span>
+                    <span class="text-muted" th:if="${client.assignedAgent == null}">— (admin)</span>
+                </td>
+                <td class="text-end">
+                    <a th:href="@{'/clients/' + ${client.id} + '/edit'}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    <form th:action="@{'/clients/' + ${client.id} + '/delete'}" method="post" class="d-inline"
+                          onsubmit="return confirm('¿Eliminar este cliente?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="text-muted small mb-0" th:if="${#lists.isEmpty(clients)}">Todavía no hay clientes registrados.</p>
+    </div>
+</div>
+
+</body>
+</html>

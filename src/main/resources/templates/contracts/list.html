@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Contratos')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Contratos / Pólizas</h4>
+        <div>
+            <a th:href="@{/contracts/export}" class="btn btn-outline-secondary">⬇ Exportar reporte (CSV)</a>
+            <a th:href="@{/contracts/new}" class="btn btn-primary">+ Nuevo contrato</a>
+        </div>
+    </div>
+
+    <div class="card p-3">
+        <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+                <th>N° Póliza</th>
+                <th>Cliente</th>
+                <th>Tipo</th>
+                <th>Aseguradora</th>
+                <th>Prima</th>
+                <th>Vence</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contract : ${contracts}">
+                <td th:text="${contract.policyNumber}">POL-0001</td>
+                <td th:text="${contract.client.fullName}">Cliente</td>
+                <td th:text="${contract.insuranceType}">VIDA</td>
+                <td th:text="${contract.insurer}">Aseguradora</td>
+                <td th:text="'L. ' + ${contract.premium}">L. 0.00</td>
+                <td th:text="${#temporals.format(contract.endDate, 'dd/MM/yyyy')}">01/01/2026</td>
+                <td>
+                    <span class="badge"
+                          th:classappend="${contract.status.name() == 'ACTIVO'} ? 'bg-success' :
+                                          (${contract.status.name() == 'POR_VENCER'} ? 'bg-warning text-dark' :
+                                          (${contract.status.name() == 'VENCIDO'} ? 'bg-danger' : 'bg-secondary'))"
+                          th:text="${contract.status}">ACTIVO</span>
+                </td>
+                <td class="text-end">
+                    <a th:href="@{'/contracts/' + ${contract.id} + '/edit'}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    <form th:action="@{'/contracts/' + ${contract.id} + '/delete'}" method="post" class="d-inline"
+                          onsubmit="return confirm('¿Eliminar este contrato?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="text-muted small mb-0" th:if="${#lists.isEmpty(contracts)}">Todavía no hay contratos registrados.</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+/* ===== Paleta Blossom ===== */
+:root {
+    --blossom-deep: #AD1457;      /* magenta profundo - botones, acentos fuertes */
+    --blossom-primary: #D6336C;   /* rosa principal - navbar, botones primarios */
+    --blossom-petal: #F48FB1;     /* rosa pétalo - detalles suaves */
+    --blossom-blush: #FCE4EC;     /* rosa muy claro - fondos de tarjetas/hover */
+    --blossom-bg: #FFF5F8;        /* fondo general de la app */
+    --blossom-plum: #4A154B;      /* texto oscuro con tono uva/morado */
+}
+
+body {
+    background-color: var(--blossom-bg);
+    font-family: 'Poppins', sans-serif;
+    color: var(--blossom-plum);
+}
+
+.brand-font {
+    font-family: 'Pacifico', cursive;
+}
+
+/* Navbar */
+.navbar-blossom {
+    background: linear-gradient(90deg, var(--blossom-deep), var(--blossom-primary));
+}
+
+/* Botones primarios */
+.btn-primary {
+    background-color: var(--blossom-primary) !important;
+    border-color: var(--blossom-primary) !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--blossom-deep) !important;
+    border-color: var(--blossom-deep) !important;
+}
+.btn-outline-secondary {
+    color: var(--blossom-deep);
+    border-color: var(--blossom-petal);
+}
+.btn-outline-secondary:hover {
+    background-color: var(--blossom-blush);
+    color: var(--blossom-deep);
+    border-color: var(--blossom-petal);
+}
+
+/* Links y texto destacado */
+a { color: var(--blossom-primary); }
+a:hover { color: var(--blossom-deep); }
+
+/* Tarjetas */
+.card {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 2px 14px rgba(173, 20, 87, 0.08);
+}
+
+/* Encabezados de tabla */
+table thead th {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: var(--blossom-deep);
+    border-bottom: 2px solid var(--blossom-blush);
+}
+table tbody tr:hover {
+    background-color: var(--blossom-blush);
+}
+
+/* Métricas del dashboard */
+.text-primary {
+    color: var(--blossom-primary) !important;
+}
+
+/* Badges de rol */
+.badge-admin { background-color: var(--blossom-deep) !important; color: #fff; }
+.badge-agent { background-color: var(--blossom-petal) !important; color: #4A154B; }

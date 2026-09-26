@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Cliente')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container my-4">
+    <h4 class="mb-3" th:text="${client.id != null} ? 'Editar cliente' : 'Nuevo cliente'">Cliente</h4>
+
+    <div class="card p-4" style="max-width: 600px;">
+        <form th:action="@{/clients/save}" th:object="${client}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="mb-3">
+                <label class="form-label">Nombre completo</label>
+                <input type="text" class="form-control" th:field="*{fullName}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" th:field="*{email}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Teléfono</label>
+                <input type="text" class="form-control" th:field="*{phone}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Dirección</label>
+                <input type="text" class="form-control" th:field="*{address}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Ciudad</label>
+                <input type="text" class="form-control" th:field="*{city}">
+            </div>
+
+            <!-- Solo el admin puede reasignar el agente responsable. Un agente siempre se auto-asigna. -->
+            <div class="mb-3" th:if="${isAdmin}">
+                <label class="form-label">Agente asignado</label>
+                <select class="form-select" th:field="*{assignedAgent}">
+                    <option value="">— Sin asignar (lo maneja el admin) —</option>
+                    <option th:each="agent : ${agents}" th:value="${agent.id}" th:text="${agent.fullName}"></option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/clients}" class="btn btn-outline-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

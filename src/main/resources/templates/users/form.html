@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Nuevo usuario')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container my-4">
+    <h4 class="mb-3">Nuevo usuario</h4>
+
+    <div class="card p-4" style="max-width: 500px;">
+        <form th:action="@{/users/save}" th:object="${userForm}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Nombre completo</label>
+                <input type="text" class="form-control" th:field="*{fullName}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Usuario (para iniciar sesión)</label>
+                <input type="text" class="form-control" th:field="*{username}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contraseña temporal</label>
+                <input type="password" class="form-control" th:field="*{rawPassword}" required>
+                <div class="form-text">Compártesela al agente para que la cambie luego si quieres agregar esa opción.</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Rol</label>
+                <select class="form-select" th:field="*{role}">
+                    <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Crear usuario</button>
+            <a th:href="@{/users}" class="btn btn-outline-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
