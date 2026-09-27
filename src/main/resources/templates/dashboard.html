@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container my-4">
+    <h4 class="mb-1">Bienvenido, <span th:text="${currentUser.fullName}">Usuario</span></h4>
+    <p class="text-muted mb-4">Resumen general de tu cartera</p>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card p-3">
+                <div class="text-muted small">Clientes</div>
+                <div class="fs-2 fw-bold text-primary" th:text="${totalClients}">0</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3">
+                <div class="text-muted small">Contratos totales</div>
+                <div class="fs-2 fw-bold text-primary" th:text="${totalContracts}">0</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3">
+                <div class="text-muted small">Contratos activos</div>
+                <div class="fs-2 fw-bold text-success" th:text="${activeContracts}">0</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-3">
+        <h6 class="mb-3">⚠️ Contratos por vencer (próximos 30 días)</h6>
+
+        <div th:if="${#lists.isEmpty(expiringSoon)}" class="text-muted small">
+            No hay contratos por vencer en los próximos 30 días.
+        </div>
+
+        <table class="table table-hover align-middle" th:if="${not #lists.isEmpty(expiringSoon)}">
+            <thead>
+            <tr>
+                <th>Póliza</th>
+                <th>Cliente</th>
+                <th>Tipo</th>
+                <th>Vence</th>
+                <th>Días restantes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${expiringSoon}">
+                <td th:text="${c.policyNumber}">POL-0001</td>
+                <td th:text="${c.client.fullName}">Cliente</td>
+                <td th:text="${c.insuranceType}">VIDA</td>
+                <td th:text="${#temporals.format(c.endDate, 'dd/MM/yyyy')}">01/01/2026</td>
+                <td>
+                    <span class="badge bg-warning text-dark" th:text="${c.daysUntilExpiration} + ' días'">15 días</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

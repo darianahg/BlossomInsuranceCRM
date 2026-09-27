@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Contrato')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<div class="container my-4">
+    <h4 class="mb-3" th:text="${contract.id != null} ? 'Editar contrato' : 'Nuevo contrato'">Contrato</h4>
+
+    <div class="card p-4" style="max-width: 650px;">
+        <form th:action="@{/contracts/save}" th:object="${contract}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="mb-3">
+                <label class="form-label">N° de póliza</label>
+                <input type="text" class="form-control" th:field="*{policyNumber}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cliente</label>
+                <select class="form-select" th:field="*{client}" required>
+                    <option value="">Seleccione un cliente</option>
+                    <option th:each="c : ${clients}" th:value="${c.id}" th:text="${c.fullName}"></option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tipo de seguro</label>
+                    <select class="form-select" th:field="*{insuranceType}" required>
+                        <option th:each="t : ${insuranceTypes}" th:value="${t}" th:text="${t}"></option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Aseguradora</label>
+                    <input type="text" class="form-control" th:field="*{insurer}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Prima (L.)</label>
+                    <input type="number" step="0.01" class="form-control" th:field="*{premium}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Estado</label>
+                    <select class="form-select" th:field="*{status}" required>
+                        <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Fecha de inicio</label>
+                    <input type="date" class="form-control" th:field="*{startDate}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Fecha de vencimiento</label>
+                    <input type="date" class="form-control" th:field="*{endDate}" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a th:href="@{/contracts}" class="btn btn-outline-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
